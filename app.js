@@ -30,6 +30,16 @@ const setMessage = (msg, color) => {
    message.style.color = color
    message.textContent = msg
 }
+
+// GAME OVER FUNCTION
+const gameOver = (win, msg) => {
+   let color
+   win === true ? color = 'green' : color = 'red'
+   // Disable input 
+   guessInput.disabled = true
+   guessInput.style.borderColor = color
+   setMessage(msg, color)
+}
 // listen for guess 
 guessBtn.addEventListener('click', () => {
    let guess = parseInt(guessInput.value)
@@ -40,14 +50,15 @@ guessBtn.addEventListener('click', () => {
    else {
       //Check if correct
       if(guess === winningNum) {
-         // Disable input 
-         guessInput.disabled = true
-         guessInput.style.borderColor = 'green'
-         setMessage(`You win! The number was ${winningNum}`, 'green')
+        gameOver(true, `You win! The number was ${winningNum}`)
       }
       else {
+         guessesLeft -= 1
          guessInput.style.borderColor = 'red'
-         setMessage(`${guess} was incorrect.  Please try again.`, 'red')
+         setMessage(`${guess} was incorrect.  Please try again. Please try again. You have ${guessesLeft} remaining`, 'red')
+         if(guessesLeft === 0) {
+            gameOver(false, `GAME OVER.  The correct number was ${winningNum}`)
+         }
       }
    }
    
